@@ -4,8 +4,8 @@ from .supervised_learner import SupervisedLearner
 from .matrix import Matrix
 import numpy as np
 
-nodes_per_layer = np.array([-1, 4, -1])
-hidden_layers = len(nodes_per_layer) - 2
+num_nodes = [-1, 4, -1]
+hidden_layers = len(num_nodes) - 2
 total_layers = hidden_layers + 2
 last_layer = hidden_layers + 1
 
@@ -17,12 +17,8 @@ class NeuralNetLearner(SupervisedLearner):
 
 	def train(self, features, labels):
 
-		global nodes_per_layer, hidden_layers, total_layers, last_layer
-
-		nodes_per_layer[[0,-1]] = features.cols, labels.value_count(0)
-		mean, stdev = 0.0, 0.3
-		# webs = [np.random.normal(mean, stdev, (, )) for layer in range(total_layers)]
-
+		self.init_webs(features, labels)
+		print(self.webs)
  
 	def predict(self, features, labels):
 		
@@ -30,6 +26,14 @@ class NeuralNetLearner(SupervisedLearner):
 		# labels += self.labels
 
 		return [0]
+
+	def init_webs(self, features, labels):
+		global num_nodes
+		# TODO : select best features...
+		num_nodes[0], num_nodes[-1] = features.cols, labels.value_count(0)
+		web_sizes = [(num_nodes[layer],num_nodes[layer+1]) for layer in range(last_layer)]
+		self.webs = [np.random.normal(0.0, 0.1, web) for web in web_sizes]
+
 
 	class Node(object):
 
