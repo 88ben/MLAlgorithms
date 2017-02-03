@@ -17,9 +17,27 @@ class NeuralNetLearner(SupervisedLearner):
 
 	def train(self, features, labels):
 
+		# TODO : how do I handle the bias?
+
 		c = 0.1
+		done = False
+		rows = features.rows
+		inputs = features.cols	# bias?
 
 		self.create_net(features, labels)
+
+		while not done:
+
+			features.shuffle(labels)
+			correct = 0
+
+			patterns = np.copy(features.data)	# bias?
+
+			for r in range(rows):
+
+				self.initialize_IO(patterns[r], labels.row(r))
+
+			done = curr_acc - prev_acc <= 0.001
 
 		# output = features.get(0,node) if layer == 0 else None
 
@@ -31,6 +49,12 @@ class NeuralNetLearner(SupervisedLearner):
 
 		return [0]
 
+	def initialize_IO(self, pattern, target):
+
+		# for n in self.nodes[0]:	# first layer
+		# 	n.output = 
+		pass
+
 	def create_net(self, features, labels):
 
 		# TODO : select good features
@@ -41,9 +65,10 @@ class NeuralNetLearner(SupervisedLearner):
 
 		self.weights = []
 		for layer in range(last_layer):
-			self.weights.append(np.around(np.random.normal(0.0, 0.3, (num_nodes[layer],num_nodes[layer+1])),3).tolist())
+			web = np.random.normal(0.0, 0.3, (num_nodes[layer],num_nodes[layer+1]))
+			self.weights.append(np.around(web,3).tolist())
 
-		# CHANGE IN WEIGHT
+		# DELTA WEIGHTS
 
 		self.w_delta = []
 		for layer in range(last_layer):
@@ -70,17 +95,18 @@ class NeuralNetLearner(SupervisedLearner):
 
 class Node(object):
 
-	def __init__(self, layer, number, output=None, bias=1.0):
+	def __init__(self, layer, number, target=None, output=None, bias=1.0):
 		self.layer = layer
 		self.number = number
+		self.target = target
 		self.output = output
 		self.bias = bias
 
 	def values(self):
-		return self.layer, self.number, self.output, self.bias
+		return self.layer, self.number, self.target, self.output, self.bias
 
-	def calc_w_delta(c, o, error):
-		return c * o * error
+	def calc_w_delta(c, output, error):
+		return c * output * error
 
 	def calc_error(target, output):
 		global last_layer
