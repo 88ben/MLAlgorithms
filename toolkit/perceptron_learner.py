@@ -31,16 +31,12 @@ class PerceptronLearner(SupervisedLearner):
 		weights = np.zeros(inputs,dtype=float)
 		w_delta = np.zeros(inputs,dtype=float)
 
-		iterations = 100
-		
-		while not done and iterations:
+		while not done:
 
-			iterations -= 1
 			features.shuffle(labels)
 			correct = 0
 
 			patterns = np.concatenate((np.copy(features.data),np.ones((rows,1))),axis=1)
-			print(patterns)
 
 			for r in range(rows):
 
@@ -57,7 +53,7 @@ class PerceptronLearner(SupervisedLearner):
 			prev_acc = curr_acc
 			epochs += 1
 
-		self.best_weights = weights
+		self.weights = weights
 
 
 	def predict(self, features, labels):
@@ -67,8 +63,8 @@ class PerceptronLearner(SupervisedLearner):
 		"""
 		# I changed supervised_learner.py to receive a return value as the prediction but only in the else statement
 		# probably need to remember that
-		net = np.sum(np.array(features) * self.best_weights[:-1])
-		net += self.best_weights[-1:]
+		net = np.sum(np.array(features) * self.weights[:-1])
+		net += self.weights[-1:]
 		labels = [0]
 		labels[0] = 1 if net > 0 else 0
 		return labels

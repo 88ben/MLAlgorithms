@@ -2,40 +2,34 @@ from __future__ import (absolute_import, division, print_function, unicode_liter
 
 from .supervised_learner import SupervisedLearner
 from .matrix import Matrix
-import numpy
+import numpy as np
 
-hidden_layers = 1
-nodes_per_layer = [-1, 4, -1]
+nodes_per_layer = np.array([-1, 4, -1])
+hidden_layers = len(nodes_per_layer) - 2
 total_layers = hidden_layers + 2
 last_layer = hidden_layers + 1
 
 
 class NeuralNetLearner(SupervisedLearner):
-	"""
-	For nominal labels, this model simply returns the majority class. For
-	continuous labels, it returns the mean value.
-	If the learning model you're using doesn't do as well as this one,
-	it's time to find a new learning model.
-	"""
-
-	labels = []
 
 	def __init__(self):
 		pass
 
 	def train(self, features, labels):
-		
-		# create webs
 
-		# webs = [np.random.normal(0.0, 0.3, (web, )) for web in range(total_layers-1)]
-		
+		global nodes_per_layer, hidden_layers, total_layers, last_layer
+
+		nodes_per_layer[[0,-1]] = features.cols, labels.value_count(0)
+		mean, stdev = 0.0, 0.3
+		# webs = [np.random.normal(mean, stdev, (, )) for layer in range(total_layers)]
+
  
 	def predict(self, features, labels):
 		
 		# del labels[:]
 		# labels += self.labels
 
-		pass
+		return [0]
 
 	class Node(object):
 
