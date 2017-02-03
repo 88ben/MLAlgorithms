@@ -1,0 +1,24 @@
+% 1. Title: Linearly Inseparable Classes
+% 
+% 2. Sources:
+%      (a) Creator: Benjamin Smith
+%      (b) Institution: BYU
+%      (c) Date: January 2016
+
+@RELATION population
+
+@ATTRIBUTE a1		CONTINUOUS
+@ATTRIBUTE a2		CONTINUOUS
+@ATTRIBUTE class 	{c1, c2}
+  
+@DATA
+% c1
+0.4,-0.4,c1
+0.3,-0.8,c1
+-0.4,0.6,c1
+-0.2,0.8,c1
+% c2
+0.2,-0.2,c2
+0.1,-0.6,c2
+-0.3,0.2,c2
+-0.1,0.4,c2
