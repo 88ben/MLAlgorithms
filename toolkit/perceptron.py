@@ -6,12 +6,6 @@ import numpy as np
 
 
 class PerceptronLearner(SupervisedLearner):
-	"""
-	For nominal labels, this model simply returns the majority class. For
-	continuous labels, it returns the mean value.
-	If the learning model you're using doesn't do as well as this one,
-	it's time to find a new learning model.
-	"""
 
 	def __init__(self):
 		pass
@@ -61,7 +55,7 @@ class PerceptronLearner(SupervisedLearner):
 		:type features: [float]
 		:type labels: [float]
 		"""
-		# I changed supervised_learner.py to receive a return value as the prediction but only in the else statement
+		# I changed supervised.py to receive a return value as the prediction but only in the else statement
 		# probably need to remember that
 		net = np.sum(np.array(features) * self.weights[:-1])
 		net += self.weights[-1:]
