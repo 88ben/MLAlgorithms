@@ -1,9 +1,9 @@
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 
-from .supervised_learner import SupervisedLearner
-from .baseline_learner import BaselineLearner
-from .perceptron_learner import PerceptronLearner
-from .neuralnet_learner import NeuralNetLearner
+from .supervised import SupervisedLearner
+from .baseline import BaselineLearner
+from .perceptron import PerceptronLearner
+from .neuralnet import NeuralNetLearner
 from .matrix import Matrix
 import random
 import argparse
