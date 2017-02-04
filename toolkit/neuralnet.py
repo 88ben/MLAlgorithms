@@ -21,6 +21,7 @@ class NeuralNetLearner(SupervisedLearner):
 
 		c = 0.1
 		done = False
+		bias = 1.0
 		rows = features.rows
 		inputs = features.cols	# bias?
 
@@ -37,7 +38,17 @@ class NeuralNetLearner(SupervisedLearner):
 
 				self.initialize_IO(patterns[r], labels.row(r))
 
-			done = curr_acc - prev_acc <= 0.001
+				for layer in range(total_layers):
+					print(layer)
+
+					for n in self.nodes[layer+1]:
+						# print(self.weights[layer][:,0])
+						# print(np.sum(self.getLayerValues(layer) * self.weights[layer][:,0]))
+						self.nodes[layer+1][0].output = np.sum(self.getLayerValues(layer) * self.weights[layer][:,0])
+					# print(self.weights[layer])
+
+			# done = curr_acc - prev_acc <= 0.001
+			break
 
 		# output = features.get(0,node) if layer == 0 else None
 
@@ -51,9 +62,11 @@ class NeuralNetLearner(SupervisedLearner):
 
 	def initialize_IO(self, pattern, target):
 
-		# for n in self.nodes[0]:	# first layer
-		# 	n.output = 
-		pass
+		for n in range(len(self.nodes[0])):		# first layer
+			self.nodes[0][n].output = pattern[n]
+		
+		for n in range(len(self.nodes[-1])):	# last layer
+			self.nodes[-1][n].target = 1 if n == target else 0
 
 	def create_net(self, features, labels):
 
@@ -66,25 +79,24 @@ class NeuralNetLearner(SupervisedLearner):
 		self.weights = []
 		for layer in range(last_layer):
 			web = np.random.normal(0.0, 0.3, (num_nodes[layer],num_nodes[layer+1]))
-			self.weights.append(np.around(web,3).tolist())
+			self.weights.append(np.around(web,3))
 
 		# DELTA WEIGHTS
 
 		self.w_delta = []
 		for layer in range(last_layer):
-			self.w_delta.append([[0]*num_nodes[layer+1]]*num_nodes[layer])
+			self.w_delta.append(np.array([[0]*num_nodes[layer+1]]*num_nodes[layer]))
 
 		# NODES
 
 		self.nodes = []
 		for layer in range(total_layers):
-			group = []
-			for node in range(num_nodes[layer]):
-				group.append(Node(layer,node))
-			self.nodes.append(group)
+			self.nodes.append(np.array([Node(layer,node) for node in range(num_nodes[layer])]))
 
 		# self.print_nodes()
 
+	def getLayerValues(self, layer):
+		return np.array([n.output for n in self.nodes[layer]])
 
 	def print_nodes(self):
 		for layer in range(total_layers):
