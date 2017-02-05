@@ -38,14 +38,21 @@ class NeuralNetLearner(SupervisedLearner):
 
 				self.initialize_IO(patterns[r], labels.row(r))
 
-				for layer in range(total_layers):
-					print(layer)
+				for web in range(last_layer):
 
-					for n in self.nodes[layer+1]:
-						# print(self.weights[layer][:,0])
-						# print(np.sum(self.getLayerValues(layer) * self.weights[layer][:,0]))
-						self.nodes[layer+1][0].output = np.sum(self.getLayerValues(layer) * self.weights[layer][:,0])
-					# print(self.weights[layer])
+					values = self.getLayerValues(web)
+					next_layer = web + 1
+
+					for node in range(num_nodes[next_layer]):
+						# TODO : column or row? bias?
+						# TODO : is this the net? what about the activation function?
+						weights = self.weights[web][:,node]
+						self.nodes[next_layer][node].output = np.sum(values * weights) # + self.nodes[next_layer][node].bias
+
+						# print("Value:  " + str(values))
+						# print("Weight: " + str(weights))
+						# print("Mult:   " + str(np.sum(values * weights)))
+						
 
 			# done = curr_acc - prev_acc <= 0.001
 			break
