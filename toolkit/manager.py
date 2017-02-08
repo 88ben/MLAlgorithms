@@ -4,6 +4,7 @@ from .supervised import SupervisedLearner
 from .baseline import BaselineLearner
 from .perceptron import PerceptronLearner
 from .neuralnet import NeuralNetLearner
+from .neuralnet_np import NeuralNetLearnerNP
 from .matrix import Matrix
 import random
 import argparse
@@ -27,6 +28,8 @@ class MLSystemManager:
             "baseline": BaselineLearner(),
             "perceptron": PerceptronLearner(),
             "neuralnet": NeuralNetLearner(),
+            # TODO remove
+            "neuralnet_np": NeuralNetLearnerNP(),
             #"decisiontree": DecisionTreeLearner(),
             #"knn": InstanceBasedLearner()
         }
@@ -196,7 +199,8 @@ class MLSystemManager:
         parser.add_argument('-V', '--verbose', action='store_true', help='Print the confusion matrix and learner accuracy on individual class values')
         parser.add_argument('-N', '--normalize', action='store_true', help='Use normalized data')
         parser.add_argument('-R', '--seed', help="Random seed") # will give a string
-        parser.add_argument('-L', required=True, choices=['baseline', 'perceptron', 'neuralnet', 'decisiontree', 'knn'], help='Learning Algorithm')
+        # TODO remove neuralnet_np
+        parser.add_argument('-L', required=True, choices=['baseline', 'perceptron', 'neuralnet', 'neuralnet_np', 'decisiontree', 'knn'], help='Learning Algorithm')
         parser.add_argument('-A', '--arff', metavar='filename', required=True, help='ARFF file')
         parser.add_argument('-E', metavar=('METHOD', 'args'), required=True, nargs='+', help="Evaluation method (training | static <test_ARFF_file> | random <%%_for_training> | cross <num_folds>)")
 

@@ -1,0 +1,10 @@
+QUESTIONS
+
+Initial bias of 1?
+Bias for EACH neuron?
+Do the biases ever change? How?
+Is there a WEIGHT associated with a bias? Or just the bias itself changing?
+
+Do I update my web of weights at the end with delta weights or do I do each web as it comes?
+	As I change w_delta in phases, that would affect the calculation for error and w_delta in earlier webs so the distinction is significant
+
